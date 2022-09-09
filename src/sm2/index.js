@@ -51,7 +51,8 @@ function doEncrypt(msg, publicKey, cipherMode = 1) {
   }
   const c2 = _.arrayToHex(msg)
 
-  return cipherMode === C1C2C3 ? c1 + c2 + c3 : c1 + c3 + c2
+  let c = cipherMode === C1C2C3 ? c1 + c2 + c3 : c1 + c3 + c2
+  return '04'+c
 }
 
 /**
@@ -62,6 +63,7 @@ function doDecrypt(encryptData, privateKey, cipherMode = 1, {
 } = {}) {
   privateKey = new BigInteger(privateKey, 16)
 
+  encryptData = encryptData.substr(2)
   let c3 = encryptData.substr(128, 64)
   let c2 = encryptData.substr(128 + 64)
 
